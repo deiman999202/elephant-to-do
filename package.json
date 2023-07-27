@@ -12,5 +12,9 @@
   },
   "engines": {
     "node": ">=14.20.1"
+  },
+  "scripts": {
+    "start": "nodemon index.js"
+    
   }
 }
