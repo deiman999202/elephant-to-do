@@ -8,13 +8,13 @@
     "google-auth-library": "^8.8.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.3.1",
-    "node": "14.20.1"
+    "node": "14.20.1",
+    "nodemon": "^3.0.1"
   },
   "engines": {
     "node": ">=14.20.1"
   },
   "scripts": {
     "start": "nodemon index.js"
-    
   }
 }
