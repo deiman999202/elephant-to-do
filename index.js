@@ -34,7 +34,10 @@ app.post('/login', async (req, res) => {
     if (passOk){
         jwt.sign({username: userDoc.username, id: userDoc._id}, secret, {}, (err, token) => {
             if (err) throw err
-            res.cookie('token', token).json(token)
+            res.cookie('token', token).json({
+                id: userDoc?._id,
+                username,
+            })
         })
     }else{
         res.status(400).json('Wrong credentials')
@@ -47,7 +50,6 @@ app.post('/logout', (req, res) => {
 
 
 app.get('/profile', async (req, res) => {
-    res.json(req.cookies)
     const {token} = req.cookies
         jwt?.verify(token, secret, {}, (err, info) => {
             if (err) throw err
