@@ -11,11 +11,12 @@ require('dotenv').config()
 const app = express()
 
 app.use(express.json())
-app.use(cors({credentials: true, origin: ["http://localhost:3000"]}))
+app.use(cors({credentials: true, origin: ["http://localhost:3000", "https://elephant-to-do-front.onrender.com"]}))
 app.use(cookieParser())
 
 const salt = bcrypt.genSaltSync(10)
 const secret = 'dsmnfbshjfdsbghjbhj'
+
 
 mongoose.connect(process.env.MongoDBLink)
 
