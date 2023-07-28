@@ -34,7 +34,7 @@ app.post('/login', async (req, res) => {
     if (passOk){
         jwt.sign({username: userDoc.username, id: userDoc._id}, secret, {}, (err, token) => {
             if (err) throw err
-            res.cookie('token', token).json("fuck you")
+            res.cookie('token', token).json(token)
         })
     }else{
         res.status(400).json('Wrong credentials')
