@@ -51,12 +51,12 @@ app.post('/logout', (req, res) => {
 
 app.get('/profile', async (req, res) => {
     const {token} = req.cookies
-    if (token){
+        console.log(req.cookies)
         jwt?.verify(token, secret, {}, (err, info) => {
             if (err) throw err
             res.json(info)
         })
-    }   
+   
 })
 
 app.post('/todo', async (req, res) => {
