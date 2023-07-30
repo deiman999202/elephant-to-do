@@ -29,17 +29,21 @@ app.post('/signup', async (req, res) => {
 app.post('/login', async (req, res) => {
     const {email, password} = req.body
     const userDoc = await User.findOne({email})
-    const passOk = bcrypt.compareSync(password, userDoc?.password)
-    if (passOk){
-        jwt.sign({id: userDoc._id, userDoc: userDoc}, secret, {}, (err, token) => {
-            if (err) throw err
-            // res.cookie('token', token).json(userDoc)
-            res.json(token)
-        })
-    }else{
-        res.status(400).json('Wrong credentials')
+    if (!userDoc){
+        res.status(404).json("No such user")
     }
-})
+    const passOk = bcrypt.compareSync(password, userDoc?.password)
+        if (passOk){
+            jwt.sign({id: userDoc._id, userDoc: userDoc}, secret, {}, (err, token) => {
+                    if (err) throw err
+                    res.json(token)
+            })
+        }else{
+            res.status(400).json("Wrong password")
+        } 
+    })
+    
+
 
 app.post('/logout', (req, res) => {
     res.cookie('token', '').json("ok")
@@ -48,15 +52,12 @@ app.post('/logout', (req, res) => {
 
 app.post('/profile', async (req, res) => {
     const {token} = req.body
-        if (token !== ""){
-            jwt?.verify(token, secret, {}, (err, info) => {
-                if (err) throw err
-                res.json(info)
-            })
-        }else{
-            res.json("nothing")
-        }
-   
+    if (token){
+        jwt?.verify(token, secret, {}, (err, info) => {
+            if (err) throw err
+            res.json(info)
+    })
+    }
 })
 
 app.post('/todo', async (req, res) => {
@@ -85,6 +86,13 @@ app.post('/authtodo', async (req, res) => {
     const {username} = req.body
     const todos = await Todo.find({author: username}).exec()
     res.json(todos)
+})
+
+app.delete("/user", async (req, res) => {
+    const {id} = req.body
+    const deletedUser = await User.findByIdAndDelete(id)
+    await Todo.deleteMany({author: deletedUser.username})
+    res.json(deletedUser)
 })
 
 app.listen(5000)
