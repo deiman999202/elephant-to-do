@@ -29,12 +29,12 @@ app.post('/signup', async (req, res) => {
 app.post('/login', async (req, res) => {
     const {email, password} = req.body
     const userDoc = await User.findOne({email})
-    const {username} = userDoc.username
     const passOk = bcrypt.compareSync(password, userDoc?.password)
     if (passOk){
-        jwt.sign({username: userDoc.username, id: userDoc._id}, secret, {}, (err, token) => {
+        jwt.sign({id: userDoc._id, userDoc: userDoc}, secret, {}, (err, token) => {
             if (err) throw err
-            res.cookie('token', token).json(userDoc)
+            // res.cookie('token', token).json(userDoc)
+            res.send(token)
         })
     }else{
         res.status(400).json('Wrong credentials')
