@@ -96,5 +96,3 @@ app.delete("/user", async (req, res) => {
 })
 
 app.listen(5000)
-
-//VQzFOi6aci7MeAaH
